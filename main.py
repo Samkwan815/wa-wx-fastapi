@@ -105,7 +105,7 @@ async def generate(payload: GenerateRequest, background_tasks: BackgroundTasks):
 @app.get("/genai/{job_id}/status")
 async def get_generation_status(job_id: str):
     if job_id not in job_statuses:
-        return {"message": "Job ID not found"}
+        return {"results": [{"message": "Job ID not found"}]}
 
     status_info = job_statuses[job_id]
     return {"results": [{"status_info": status_info}]}
@@ -113,11 +113,11 @@ async def get_generation_status(job_id: str):
 @app.get("/genai/{job_id}/result")
 async def get_generation_result(job_id: str):
     if job_id not in job_statuses:
-        return {"message": "Job ID not found"}
+        return {"result": [{"message": "Job ID not found"}] }
 
     status_info = job_statuses[job_id]
     if status_info["status"] != "completed":
-        return {"message": "Job is not yet completed"}
+        return {"result": [{"message": "Job is not yet completed"}] }
 
     result = status_info["result"]
 
