@@ -64,8 +64,6 @@ def perform_generation(payload: GenerateRequest, job_id: str):
                 return response.text
             
     from ibm_cloud_sdk_core import IAMTokenManager
-    #from ibm_cloud_sdk_core.authenticators import IAMAuthenticator, BearerTokenAuthenticator
-    import getpass
 
     access_token = IAMTokenManager(
         apikey = apikey,
@@ -102,7 +100,7 @@ async def generate(payload: GenerateRequest, background_tasks: BackgroundTasks):
     background_tasks.add_task(perform_generation, payload, job_id)
 
     # Return the job ID
-    return {"Request received - job_id": job_id, "status": "running"}
+    return {"results": [{"job_id": job_id, "status": "running"}]}
 
 @app.get("/genai/{job_id}/status")
 async def get_generation_status(job_id: str):
@@ -110,7 +108,7 @@ async def get_generation_status(job_id: str):
         return {"message": "Job ID not found"}
 
     status_info = job_statuses[job_id]
-    return status_info
+    return {"results": [{"status_info": status_info}]}
 
 @app.get("/genai/{job_id}/result")
 async def get_generation_result(job_id: str):
@@ -126,7 +124,7 @@ async def get_generation_result(job_id: str):
     # Delete job and its result from the dictionary
     del job_statuses[job_id]
 
-    return {"result": result}
+    return {"result": [{"generated_text": result}]}
 
 @app.get("/openapi.json")
 async def get_open_api_endpoint():
