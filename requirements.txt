@@ -14,3 +14,5 @@ uvicorn==0.20.0
 uvloop==0.17.0
 watchfiles==0.18.1
 websockets==10.4
+ibm-cloud-sdk-core==3.16.7
+pymongo==4.5.0
