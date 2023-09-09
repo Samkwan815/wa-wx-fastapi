@@ -16,3 +16,4 @@ watchfiles==0.18.1
 websockets==10.4
 ibm-cloud-sdk-core==3.16.7
 pymongo==4.5.0
+requests==2.31.0
