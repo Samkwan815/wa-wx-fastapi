@@ -2,6 +2,7 @@
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
+from pymongo import MongoClient
 
 app = FastAPI()
 
