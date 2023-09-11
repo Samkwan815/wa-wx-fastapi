@@ -1,0 +1,180 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+
+    "servers": [
+        {
+          "url": "https://fastapi-wx-wa-watsonx.koyeb.app",
+          "description": "fastapi deployed on Koyeb"
+        }
+      ],
+    
+    "paths": {
+        "/genai/": {
+            "post": {
+                "summary": "Generate",
+                "operationId": "generate_genai__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["model_id", "input", "project_id", "apikey"],
+                                "properties": {
+                                    "model_id": {
+                                        "type": "string"
+                                    },
+                                    "input" : {
+                                        "type": "string"
+                                    },
+                                    
+                                    "project_id" : {
+                                        "type": "string"
+                                    },
+
+                                    "decoding_method": {
+                                        "type": "string"
+                                    },
+
+                                    "max_new_tokens": {
+                                        "type": "number",
+                                        "description": "The maximum number of new tokens to be generated.",
+                                        "example": "500"
+                                    },
+                                    "repetition_penalty": {
+                                        "type": "number",
+                                        "description": "The value which represents the penalty for penalizing tokens that have already been generated or belong to the context.",
+                                        "example": "1.10"
+                                    },
+                                    "apikey": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "properties": {
+                                                "job_id": {
+                                                  "type": "string"
+                                                },
+                                                "status": {
+                                                  "description": "The number of tokens in the output",
+                                                  "type": "string"
+                                                }
+                                              }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/genai/{job_id}/status": {
+            "get": {
+                "summary": "Get Generation Status",
+                "operationId": "get_generation_status_genai__job_id__status_get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Id",
+                            "type": "string"
+                        },
+                        "name": "job_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "generated_text": {
+                                                        "type": "string"
+                                                    },
+                                                    "message": {
+                                                        "type": "string"
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/genai/{job_id}/result": {
+            "get": {
+                "summary": "Get Generation Result",
+                "operationId": "get_generation_result_genai__job_id__result_get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Id",
+                            "type": "string"
+                        },
+                        "name": "job_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "generated_text": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
